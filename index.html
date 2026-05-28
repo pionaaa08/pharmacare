@@ -1,1 +1,279 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmaCare+</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-green-100 p-6">
 
+    <div class="max-w-7xl mx-auto">
+
+        <div class="bg-white rounded-3xl shadow-xl p-8 mb-8">
+            <h1 class="text-5xl font-bold text-blue-700">FarmaCare+</h1>
+            <p class="text-gray-600 text-lg mt-3">
+                Sistem pemeriksa obat, herbal, pengingat, dan analisis risiko penggunaan obat.
+            </p>
+
+            <div class="grid md:grid-cols-5 gap-4 mt-8">
+                <div class="bg-blue-100 p-5 rounded-2xl">
+                    <h2 class="font-bold text-blue-800">Pemeriksa Obat</h2>
+                </div>
+                <div class="bg-green-100 p-5 rounded-2xl">
+                    <h2 class="font-bold text-green-800">Herbal & Vitamin</h2>
+                </div>
+                <div class="bg-yellow-100 p-5 rounded-2xl">
+                    <h2 class="font-bold text-yellow-800">Penilaian Risiko</h2>
+                </div>
+                <div class="bg-red-100 p-5 rounded-2xl">
+                    <h2 class="font-bold text-red-800">Pengingat Obat</h2>
+                </div>
+                <div class="bg-purple-100 p-5 rounded-2xl">
+                    <h2 class="font-bold text-purple-800">Basis Data Obat</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-3xl shadow-xl p-8 mb-8">
+            <div class="grid md:grid-cols-2 gap-4">
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Cari obat..."
+                    class="border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+
+                <select
+                    id="categorySelect"
+                    class="border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                    <option value="Semua">Semua</option>
+                    <option value="Analgesik">Analgesik</option>
+                    <option value="Antibiotik">Antibiotik</option>
+                    <option value="Vitamin">Vitamin</option>
+                    <option value="Herbal">Herbal</option>
+                    <option value="Antihistamin">Antihistamin</option>
+                    <option value="Obat Lambung">Obat Lambung</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="medicineGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+
+        <div class="mt-10 bg-blue-700 text-white rounded-3xl p-8">
+            <h2 class="text-3xl font-bold mb-3">Tentang FarmaCare+</h2>
+            <p class="text-blue-100 text-lg leading-relaxed">
+                FarmaCare+ merupakan aplikasi database obat modern yang membantu pengguna memeriksa obat, herbal, efek samping, kategori usia, risiko penggunaan, dan pengingat konsumsi obat secara aman.
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        // Data Array Obat dari komponen React asli
+        const medicines = [
+            {
+                name: "Paracetamol",
+                category: "Analgesik",
+                type: "Obat Bebas",
+                herbal: false,
+                age: "Anak 6+ & Dewasa",
+                function: "Meredakan demam dan nyeri",
+                dosage: "3x sehari setelah makan",
+                reminder: "08:00, 14:00, 20:00",
+                stock: "Tersedia",
+                sideEffect: "Mual ringan",
+                risk: "Rendah",
+                warning: "Hindari overdosis",
+            },
+            {
+                name: "Amoxicillin",
+                category: "Antibiotik",
+                type: "Obat Resep",
+                herbal: false,
+                age: "Dewasa",
+                function: "Mengatasi infeksi bakteri",
+                dosage: "3x sehari",
+                reminder: "06:00, 14:00, 22:00",
+                stock: "Tersedia",
+                sideEffect: "Diare",
+                risk: "Sedang",
+                warning: "Harus sesuai resep dokter",
+            },
+            {
+                name: "Vitamin C",
+                category: "Vitamin",
+                type: "Suplemen",
+                herbal: false,
+                age: "Semua Usia",
+                function: "Meningkatkan daya tahan tubuh",
+                dosage: "1x sehari",
+                reminder: "07:00",
+                stock: "Hampir Habis",
+                sideEffect: "Jarang terjadi",
+                risk: "Rendah",
+                warning: "Jangan dikonsumsi berlebihan",
+            },
+            {
+                name: "Ibuprofen",
+                category: "Anti Inflamasi",
+                type: "Obat Bebas Terbatas",
+                herbal: false,
+                age: "12+",
+                function: "Mengurangi nyeri dan peradangan",
+                dosage: "2x sehari",
+                reminder: "09:00, 21:00",
+                stock: "Tersedia",
+                sideEffect: "Sakit lambung",
+                risk: "Sedang",
+                warning: "Tidak dianjurkan untuk maag berat",
+            },
+            {
+                name: "Cetirizine",
+                category: "Antihistamin",
+                type: "Obat Bebas",
+                herbal: false,
+                age: "6+",
+                function: "Mengatasi alergi",
+                dosage: "1x malam",
+                reminder: "20:00",
+                stock: "Tersedia",
+                sideEffect: "Mengantuk",
+                risk: "Rendah",
+                warning: "Hindari mengemudi setelah minum",
+            },
+            {
+                name: "Omeprazole",
+                category: "Obat Lambung",
+                type: "Obat Resep",
+                herbal: false,
+                age: "18+",
+                function: "Mengurangi asam lambung",
+                dosage: "1x sebelum makan",
+                reminder: "06:30",
+                stock: "Habis",
+                sideEffect: "Pusing ringan",
+                risk: "Sedang",
+                warning: "Konsultasikan jika penggunaan lama",
+            },
+            {
+                name: "Tolak Angin",
+                category: "Herbal",
+                type: "Obat Herbal",
+                herbal: true,
+                age: "12+",
+                function: "Meredakan masuk angin",
+                dosage: "2x sehari",
+                reminder: "08:00 & 20:00",
+                stock: "Tersedia",
+                sideEffect: "Jarang terjadi",
+                risk: "Rendah",
+                warning: "Perhatikan kandungan gula",
+            },
+            {
+                name: "Jahe Merah",
+                category: "Herbal",
+                type: "Minuman Herbal",
+                herbal: true,
+                age: "Semua Usia",
+                function: "Menghangatkan tubuh",
+                dosage: "1x sehari",
+                reminder: "19:00",
+                stock: "Tersedia",
+                sideEffect: "Panas lambung",
+                risk: "Rendah",
+                warning: "Hindari konsumsi berlebihan",
+            },
+            {
+                name: "Curcuma Plus",
+                category: "Herbal",
+                type: "Vitamin Herbal",
+                herbal: true,
+                age: "Anak-anak",
+                function: "Meningkatkan nafsu makan",
+                dosage: "1x sehari",
+                reminder: "07:00",
+                stock: "Tersedia",
+                sideEffect: "Jarang terjadi",
+                risk: "Rendah",
+                warning: "Gunakan sesuai dosis",
+            },
+        ];
+
+        // Element Selector
+        const searchInput = document.getElementById("searchInput");
+        const categorySelect = document.getElementById("categorySelect");
+        const medicineGrid = document.getElementById("medicineGrid");
+
+        // Fungsi Render Kartu Obat ke Layar
+        function renderMedicines() {
+            const searchValue = searchInput.value.toLowerCase();
+            const selectedCategory = categorySelect.value;
+
+            // Filter data yang cocok
+            const filtered = medicines.filter((medicine) => {
+                const matchSearch = medicine.name.toLowerCase().includes(searchValue);
+                const matchCategory = selectedCategory === "Semua" || medicine.category === selectedCategory;
+                return matchSearch && matchCategory;
+            });
+
+            // Reset tampilan grid sebelum diisi ulang
+            medicineGrid.innerHTML = "";
+
+            // Jika hasil filter kosong
+            if (filtered.length === 0) {
+                medicineGrid.innerHTML = `<p class="text-gray-500 col-span-full text-center py-10">Obat tidak ditemukan.</p>`;
+                return;
+            }
+
+            // Membangun element HTML untuk setiap kartu obat
+            filtered.forEach((medicine) => {
+                const badgeColor = medicine.risk === "Rendah" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700";
+                
+                const cardHtml = `
+                    <div class="bg-white rounded-3xl shadow-lg p-6 hover:shadow-2xl transition">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-2xl font-bold text-blue-700">${medicine.name}</h2>
+                            <span class="px-3 py-1 rounded-full text-sm font-semibold ${badgeColor}">
+                                Risiko ${medicine.risk}
+                            </span>
+                        </div>
+
+                        <div class="space-y-2 text-gray-700">
+                            <p><b>Kategori:</b> ${medicine.category}</p>
+                            <p><b>Jenis:</b> ${medicine.type}</p>
+                            <p><b>Usia:</b> ${medicine.age}</p>
+                            <p><b>Fungsi:</b> ${medicine.function}</p>
+                            <p><b>Dosis:</b> ${medicine.dosage}</p>
+                            <p><b>Pengingat:</b> ${medicine.reminder}</p>
+                            <p><b>Efek Samping:</b> ${medicine.sideEffect}</p>
+                            <p><b>Peringatan:</b> ${medicine.warning}</p>
+                            <p><b>Stok:</b> ${medicine.stock}</p>
+                            <p><b>Herbal:</b> ${medicine.herbal ? "Ya" : "Tidak"}</p>
+                        </div>
+
+                        <div class="mt-6 flex gap-3">
+                            <button class="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl transition">
+                                Sudah Diminum
+                            </button>
+                            <button class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl transition">
+                                Detail
+                            </button>
+                        </div>
+                    </div>
+                `;
+                medicineGrid.innerHTML += cardHtml;
+            });
+        }
+
+        // Event Listener untuk memantau perubahan Input & Dropdown Select
+        searchInput.addEventListener("input", renderMedicines);
+        categorySelect.addEventListener("change", renderMedicines);
+
+        // Menjalankan render pertama kali saat halaman selesai dimuat
+        renderMedicines();
+    </script>
+</body>
+</html>
